@@ -3,8 +3,6 @@ package cn.itcast.domain;
 public class Person {
     private Long id;
     public String name;
-    private Integer age;
-    private Boolean gender;
 
     public String a;
     protected String b;
@@ -14,11 +12,9 @@ public class Person {
     public Person() {
     }
 
-    public Person(Long id, String name, Integer age, Boolean gender) {
+    public Person(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.age = age;
-        this.gender = gender;
     }
 
     public Long getId() {
@@ -37,29 +33,11 @@ public class Person {
         this.name = name;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public Boolean getGender() {
-        return gender;
-    }
-
-    public void setGender(Boolean gender) {
-        this.gender = gender;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", age=" + age +
-                ", gender=" + gender +
                 ", a='" + a + '\'' +
                 ", b='" + b + '\'' +
                 ", c='" + c + '\'' +
@@ -67,7 +45,12 @@ public class Person {
                 '}';
     }
 
-    public void eat(){
-        System.out.println("人在吃饭");
+    public void eat() {
+        System.out.println("人在吃");
+    }
+
+    public void eat(String food) {
+        System.out.println("人在吃" + food);
+
     }
 }

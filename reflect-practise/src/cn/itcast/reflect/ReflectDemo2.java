@@ -38,7 +38,7 @@ public class ReflectDemo2 {
         System.out.println("--------------------------");
         Field d = personClass.getDeclaredField("d");
         d.setAccessible(true); // 暴力反射
-        Object o1 = d.get(person);
+        Object o1 = field.get(person);
         System.out.println(o1);
 
 
