@@ -2,9 +2,14 @@ package cn.itcast.domain;
 
 public class Person {
     private Long id;
-    private String name;
+    public String name;
     private Integer age;
     private Boolean gender;
+
+    public String a;
+    protected String b;
+    String c;
+    private String d;
 
     public Person() {
     }
@@ -55,6 +60,10 @@ public class Person {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", gender=" + gender +
+                ", a='" + a + '\'' +
+                ", b='" + b + '\'' +
+                ", c='" + c + '\'' +
+                ", d='" + d + '\'' +
                 '}';
     }
 

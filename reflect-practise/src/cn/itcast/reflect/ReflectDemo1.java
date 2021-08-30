@@ -1,6 +1,7 @@
 package cn.itcast.reflect;
 
 import cn.itcast.domain.Person;
+import cn.itcast.domain.Student;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.ArrayList;
@@ -25,5 +26,7 @@ public class ReflectDemo1 {
         Class cls3 = person.getClass();
         System.out.println(cls3);
         System.out.println(cls1==cls2 && cls1==cls3 && cls2==cls3);
+        Class cls4 = Student.class;
+        System.out.println(cls1==cls4);
     }
 }
