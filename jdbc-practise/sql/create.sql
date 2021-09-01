@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS user
+(
+    id     INT PRIMARY KEY AUTO_INCREMENT,
+    name   VARCHAR(30),
+    age    INT,
+    gender BOOLEAN
+) ENGINE = INNODB
+  AUTO_INCREMENT = 1;
