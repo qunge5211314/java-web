@@ -9,7 +9,7 @@
         <sex>male</sex>
     </student>
     <student number="s002">
-        <name id="lisi">lisi</name>
+        <name value="lisi">lisi</name>
         <age>24</age>
         <sex>female</sex>
     </student>
