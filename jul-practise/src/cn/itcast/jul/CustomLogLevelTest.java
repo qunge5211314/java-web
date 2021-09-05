@@ -2,10 +2,7 @@ package cn.itcast.jul;
 
 import org.junit.Test;
 
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.logging.*;
 
 /**
  * 自定义日志级别测试
@@ -27,7 +24,18 @@ public class CustomLogLevelTest {
         consoleHandler.setFormatter(simpleFormatter);
         // 在记录器中添加处理器
         logger.addHandler(consoleHandler);
-        
+        // 设置日志的打印级别
+        // 此处必须将日志记录器和处理器的级别进行统一的设置，才会达到日志显示相应级别的效果。
+        logger.setLevel(Level.ALL);
+        consoleHandler.setLevel(Level.ALL);
+
+        logger.severe("severe信息");
+        logger.warning("warning信息");
+        logger.info("info信息");
+        logger.config("config信息");
+        logger.fine("fine信息");
+        logger.finer("finer信息");
+        logger.finest("finest信息");
 
     }
 }
