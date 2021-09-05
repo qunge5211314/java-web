@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 /**
  * JUL日志级别学习
  */
-public class JulLogLevelTest {
+public class LogLevelTest {
     @Test
     public void julLogLevelTest1(){
         /*
@@ -36,7 +36,7 @@ public class JulLogLevelTest {
         这个数值的意义在于，如果我们设置的日志级别是INFO--->800
         那么最终展现的日志信息必须是数值大于800的所有的日志信息
          */
-        Logger logger = Logger.getLogger("cn.itcast.jul.JulLogLevelTest");
+        Logger logger = Logger.getLogger("cn.itcast.jul.LogLevelTest");
 
         /*
         如果只是通过以下方式设置日志级别，那么不能够起到效果
