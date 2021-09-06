@@ -23,7 +23,7 @@ public class CustomConfigOutputFile {
         // 读取自定义的配置文件
         logManager.readConfiguration(fileInputStream);
         // 日志记录器
-        Logger logger = Logger.getLogger("cn.itcast.jul.CustomConfigFileTest");
+        Logger logger = Logger.getLogger("cn.itcast.jul.CustomConfigOutputFile");
 
         logger.severe("severe信息");
         logger.warning("warning信息");

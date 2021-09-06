@@ -20,6 +20,8 @@ public class JacksonTest {
         Person person = new Person(1, "张三", true, new Date(), "123456");
         // 2.创建jackson的核心对象 ObjectMapper
         ObjectMapper objectMapper = new ObjectMapper();
+        // jackson时区问题
+        objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         // 3.转换
         /**
          * 转换方法：
@@ -30,6 +32,7 @@ public class JacksonTest {
          *          OutputStream：将obj转为字符串并将json字符串数据填充到一个字节输出流中
          *    writeValueAsString(Object obj)将对象转为字符串
          */
+        System.out.println(person.getBirthday());
         String personJson = objectMapper.writeValueAsString(person);
         System.out.println(personJson);
         System.out.println("--------------------------------");
