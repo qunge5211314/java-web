@@ -1,5 +1,9 @@
 package cn.itcast.log4j;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.junit.Test;
+
 /**
  * Log4j配置文件的学习
  * 01配置文件的使用
@@ -42,9 +46,33 @@ package cn.itcast.log4j;
  *          配置
  *          log4j.appender.console.layout = org.apache.log4j.PatternLayout
  *
+ *          通过log4j.rootLogger继续在类中搜索
+ *          找到void configureRootCategory方法
+ *          在这个方法中执行了parseCategory方法
+ *          找到代码StringTokenizer st = new StringTokenizer(value, ",");表示要以逗号的方式来切割字符串
+ *          证明了log4j.rootLogger的取值，其中可以有多个值，使用逗号进行分割
+ *          通过代码String levelStr = st.nextToken();表示切割后的第一个值是日志的级别
+ *          通过代码while(st.hasMoreTokens())表示接下来的值是可以通过while循环遍历得到的
+ *          第2～N个值就是我们要配置的其他信息，这个信息就是appenderName
+ *          证明了我们配置的方式
+ *          log4j.rootLogger=日志级别,appenderName1,appenderName2...
+ *          表示可以同时在根结点上配置多个日志输出的途径
+ *
+ *          通过我们自己的配置文件就可以将原来的加载代码去除掉了
  *
  *
  *
  */
 public class ConfigFileTest01 {
+    @Test
+    public void configFileTest01(){
+        Logger logger = Logger.getLogger(Log4jPrimerTest.class);
+
+        logger.trace("trace信息");
+        logger.debug("debug信息");
+        logger.info("info信息");
+        logger.warn("warn信息");
+        logger.error("error信息");
+        logger.fatal("fatal信息");
+    }
 }
