@@ -16,7 +16,7 @@ public class ConfigFileTest03 {
     @Test
     public void configFileTest03(){
         LogLog.setInternalDebugging(true);
-        Logger logger = Logger.getLogger(Log4jPrimerTest.class);
+        Logger logger = Logger.getLogger(ConfigFileTest03.class);
 
         logger.trace("trace信息");
         logger.debug("debug信息");

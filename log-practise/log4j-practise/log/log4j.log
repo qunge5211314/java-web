@@ -1,0 +1,6 @@
+[TRACE ]0 cn.itcast.log4j.ConfigFileTest07 main 2021-09-07 15:39:31:833 trace信息
+[DEBUG ]2 cn.itcast.log4j.ConfigFileTest07 main 2021-09-07 15:39:31:835 debug信息
+[INFO  ]2 cn.itcast.log4j.ConfigFileTest07 main 2021-09-07 15:39:31:835 info信息
+[WARN  ]2 cn.itcast.log4j.ConfigFileTest07 main 2021-09-07 15:39:31:835 warn信息
+[ERROR ]2 cn.itcast.log4j.ConfigFileTest07 main 2021-09-07 15:39:31:835 error信息
+[FATAL ]3 cn.itcast.log4j.ConfigFileTest07 main 2021-09-07 15:39:31:836 fatal信息

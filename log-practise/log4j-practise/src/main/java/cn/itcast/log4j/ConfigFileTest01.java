@@ -66,7 +66,7 @@ import org.junit.Test;
 public class ConfigFileTest01 {
     @Test
     public void configFileTest01(){
-        Logger logger = Logger.getLogger(Log4jPrimerTest.class);
+        Logger logger = Logger.getLogger(ConfigFileTest01.class);
 
         logger.trace("trace信息");
         logger.debug("debug信息");

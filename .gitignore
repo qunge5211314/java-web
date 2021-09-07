@@ -35,3 +35,4 @@ build/
 ### output class file ###
 out/
 *.class
+log/
