@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property name="pattern" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss} %c %M %L %thread %m%n">
+    </property>
+    <property name="logDir" value="./log/">
+    </property>
+
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <target>
+            System.err
+        </target>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+
+
+    </appender>
+
+    <appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
+        <file>${logDir}logback.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}roll.%d{yyyy-MM-dd}.log%i.gz</fileNamePattern>
+            <maxFileSize>20KB</maxFileSize>
+        </rollingPolicy>
+    </appender>
+
+    <root level="ALL">
+        <appender-ref ref="consoleAppender"/>
+<!--        <appender-ref ref="fileAppender"/>-->
+        <appender-ref ref="rollingFileAppender"/>
+    </root>
+</configuration>
