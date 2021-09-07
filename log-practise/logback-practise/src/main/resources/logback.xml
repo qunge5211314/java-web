@@ -71,7 +71,7 @@
     </appender>
 
     <root level="ALL">
-        <appender-ref ref="consoleAppender"/>
+<!--        <appender-ref ref="consoleAppender"/>-->
 <!--        <appender-ref ref="fileAppender"/>-->
 <!--        <appender-ref ref="rollingFileAppender"/>-->
 <!--        <appender-ref ref="consoleFilterAppender"/>-->
