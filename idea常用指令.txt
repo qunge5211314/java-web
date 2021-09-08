@@ -1,0 +1,5 @@
+1、 command + 7              查看类结构
+2、 control + H              查看类继承结构
+3、 command + shift + enter  结束代码行
+4、 sout                     System.ou.println()方法快速输入
+5、 psvm                     public static void main(String[] args){}快速输入
