@@ -2,11 +2,13 @@ package cn.itcast.mybatis.test;
 
 
 import cn.itcast.mybatis.bean.User;
+import cn.itcast.mybatis.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,15 +16,24 @@ import java.io.InputStream;
 
 @Slf4j
 public class MybatisPrimer01 {
+    SqlSessionFactory sqlSessionFactory;
+
+    @Before
+    public void before(){
+        String resource = "mybatis.xml";
+        InputStream resourceAsStream = null;
+        try {
+            resourceAsStream = Resources.getResourceAsStream(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsStream);
+    }
     /**
      * 基于statementID去执行sql
-     * @throws IOException
      */
     @Test
-    public void test01() throws IOException {
-        String resource = "mybatis.xml";
-        InputStream resourceAsStream = Resources.getResourceAsStream(resource);
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsStream);
+    public void test01() {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             User user = (User) session.selectOne("cn.itcast.mybatis.bean.UserMapper.selectUser", 1);
             log.info(user.toString());
@@ -36,11 +47,9 @@ public class MybatisPrimer01 {
      */
     @Test
     public void test02() throws IOException {
-        String resource = "mybatis.xml";
-        InputStream resourceAsStream = Resources.getResourceAsStream(resource);
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsStream);
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            User user = (User) session.selectOne("cn.itcast.mybatis.bean.UserMapper.selectUser", 1);
+            UserMapper mapper = session.getMapper(UserMapper.class);
+            User user = mapper.selectUser(2);
             log.info(user.toString());
         }
 
