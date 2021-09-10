@@ -59,7 +59,7 @@ public class MybatisCRUD02 {
     public void updateUserTest(){
         try (SqlSession session = sqlSessionFactory.openSession()) {
             UserMapper mapper = session.getMapper(UserMapper.class);
-            User user = mapper.selectUser(1);
+            User user = mapper.selectUser(2);
             user.setName("zhangsan update");
             Integer result = mapper.updateUser(user);
             log.info(result.toString());
