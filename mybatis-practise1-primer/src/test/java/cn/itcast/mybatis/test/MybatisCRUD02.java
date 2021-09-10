@@ -71,7 +71,7 @@ public class MybatisCRUD02 {
     public void selectUserTest(){
         try (SqlSession session = sqlSessionFactory.openSession()) {
             UserMapper mapper = session.getMapper(UserMapper.class);
-            User user = mapper.selectUser(1);
+            User user = mapper.selectUser(3);
             log.info(user.toString());
         }
     }

@@ -9,6 +9,17 @@
     url：引入网络路径或磁盘路径下的资源
     -->
     <properties resource="mybatis.properties"></properties>
+    <!--
+    2、settings包含很多重要设置项
+        setting用来设置每一个设置项
+            name：设置项的名字
+            value：设置项的取值
+    -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--3、typeAliases-->
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>

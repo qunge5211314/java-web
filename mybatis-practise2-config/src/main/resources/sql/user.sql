@@ -4,5 +4,4 @@ CREATE TABLE IF NOT EXISTS user
     name   VARCHAR(30)
 ) ENGINE = INNODB
   AUTO_INCREMENT = 1;
-
 alter table user add last_name varchar(50);
