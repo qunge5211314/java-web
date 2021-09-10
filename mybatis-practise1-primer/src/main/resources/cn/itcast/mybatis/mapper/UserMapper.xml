@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.mybatis.mapper.UserMapper">
+<!--    注意：使用注解的方式去执行sql需要将下面这些注释掉-->
+    <select id="selectUser" resultType="cn.itcast.mybatis.bean.User">
+        select * from User where id = #{id}
+    </select>
+
+    <insert id="insertUser">
+        INSERT INTO User (`name`) values (#{name})
+    </insert>
+
+    <update id="updateUser">
+        UPDATE User set name=#{name} WHERE id=#{id}
+    </update>
+
+    <delete id="deleteUser">
+        DELETE FROM User WHERE id=#{id}
+    </delete>
+</mapper>
