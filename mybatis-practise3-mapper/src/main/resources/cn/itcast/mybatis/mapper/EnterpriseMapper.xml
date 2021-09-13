@@ -34,14 +34,15 @@
     </select>
 
     <resultMap id="myEnterpriseStep" type="Enterprise">
-<!--        <id column="id" property="id"/>-->
-<!--        <result column="name" property="name"/>-->
+        <!--        <id column="id" property="id"/>-->
+        <!--        <result column="name" property="name"/>-->
         <collection property="userList" ofType="User"
                     select="cn.itcast.mybatis.mapper.UserMapperPlus.selectUsersByEnterpriseId"
-                    column="id">
-<!--            <id column="id" property="id"/>-->
-<!--            <result column="last_name" property="lastName"/>-->
-<!--            <result column="name" property="name"/>-->
+                    column="enterpriseId=id"
+                    fetchType="lazy">
+            <!--            <id column="id" property="id"/>-->
+            <!--            <result column="last_name" property="lastName"/>-->
+            <!--            <result column="name" property="name"/>-->
         </collection>
     </resultMap>
 
@@ -50,4 +51,14 @@
         FROM Enterprise
         WHERE id = #{id}
     </select>
+
+    <!--
+    拓展：多列的值传递过去
+    将多列的值封装map传递
+    column="{key1=column1,key2=column2....}"
+
+    fetchType="lazy"：表示使用延迟加载
+        lazy：延迟加载
+        eager：立即加载
+    -->
 </mapper>

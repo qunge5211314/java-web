@@ -54,8 +54,8 @@ public class MapperPlusTest {
     public void mapperPlusTest03() {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             UserMapperPlus userMapperPlus = sqlSession.getMapper(UserMapperPlus.class);
-            User user = userMapperPlus.selectUserAndEnterpriseByIdStep(2);
-            log.info(user.getName());
+            User user = userMapperPlus.selectUserAndEnterpriseByIdStep(4);
+            log.info(user.toString());
             log.info(user.getEnterprise().toString());
         }
     }
@@ -74,7 +74,7 @@ public class MapperPlusTest {
     public void mapperPlusTest05() {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             EnterpriseMapper enterpriseMapper = sqlSession.getMapper(EnterpriseMapper.class);
-            Enterprise enterprise = enterpriseMapper.selectEnterpriseAndUsersByIdStep(1);
+            Enterprise enterprise = enterpriseMapper.selectEnterpriseAndUsersByIdStep(2);
             log.info(enterprise.getName());
             log.info(enterprise.getUserList().toString());
         }

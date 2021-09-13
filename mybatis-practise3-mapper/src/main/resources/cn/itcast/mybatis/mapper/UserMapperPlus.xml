@@ -126,4 +126,40 @@
         FROM User
         WHERE enterprise_id = #{enterpriseId}
     </select>
+
+
+    <!--
+    鉴别器
+    mybatis可以使用discriminator鉴别器来判断某列的值，然后根据某列的值改变封装行为
+    封装User为例：
+        如果查出姓li的，就把企业信息查出来，否则不查询；
+        如果姓liu，把last_name这一列赋值给name
+    -->
+
+    <resultMap id="myUserDiscriminator" type="User">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="last_name" property="lastName"/>
+        <!--
+        column:指定判定的列名
+        javaType:列值对应的Java类型
+        -->
+        <discriminator javaType="string" column="last_name">
+            <!--查出姓li的 resultType指定封装的结果类型,不能缺少-->
+            <case value="li" resultType="User">
+                <association property="enterprise"
+                             select="cn.itcast.mybatis.mapper.EnterpriseMapper.selectOneById"
+                             column="enterprise_id">
+                </association>
+            </case>
+            <!--如果姓liu，把last_name这一列赋值给name-->
+            <case value="liu" resultType="User">
+                <id column="id" property="id"/>
+                <result column="name" property="name"/>
+                <result column="last_name" property="name"/>
+            </case>
+        </discriminator>
+
+
+    </resultMap>
 </mapper>
