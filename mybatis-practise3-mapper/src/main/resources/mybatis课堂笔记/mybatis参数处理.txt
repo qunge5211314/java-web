@@ -55,4 +55,21 @@
     取值：取出第一个id的值
         id====>#{list[0]}
 
-========================================结合源码分析====================================
+===========================================参数值的获取==============================================
+#{}：可以获取map中的值或者pojo对象属性的值
+${}：可以获取map中的值或者pojo对象属性的值
+区别：#{}是以预编译的形式将参数设置到sql语句中，防止sql注入
+     ${}取出的值直接拼装在sql语句中
+     大多数情况下，我们取参数的值都应该使用#{}的方式
+     原生jdbc不支持占位符的地方我们就可以使用${}进行取值
+     比如分表、排序....：按照年份分表拆分
+
+#{}更丰富的用法：
+    规定参数的一些规则：
+        javaType、jdbcType、mode(存储过程)、numericScale、resultMap、typeHandler、jdbcTypeName、expression(未来准备支持的功能)
+        jdbcType通常需要在某种特定的条件下被设置
+            在我们数据为null的时候，有些数据库可能不能识别mybatis对null的默认处理。比如Oracle(报错)：
+                Jdbc OTHER，无效的类型，因为mybatis对所有的null都映射的是原声Jdbc的OTHER类型，oracle不能正确处理
+            由于全局配置中：jdbcTypeForNull=OTHER；Oracle不支持；
+            1、#{属性名,jdbcType=OTHER}
+            2、jdbcTypeForNull=NULL

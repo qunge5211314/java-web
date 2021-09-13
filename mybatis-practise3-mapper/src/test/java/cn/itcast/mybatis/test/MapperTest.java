@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,4 +78,47 @@ public class MapperTest {
             log.info(user.toString());
         }
     }
+
+    /**
+     * 返回查询结果列表
+     */
+    @Test
+    public void mapperTest04() {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            String name = "%l%";
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            List<User> userList = userMapper.selectUsersByNameLike(name);
+            for (User user : userList) {
+                log.info(user.toString());
+            }
+        }
+    }
+
+    /**
+     * 返回查询结果为Map的方式
+     */
+    @Test
+    public void mapperTest05() {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            Map<String, Object> userMap = userMapper.selectOneByIdMapResult(2);
+            log.info(userMap.toString());
+
+        }
+    }
+
+    /**
+     * 返回查询结果为Map的方式
+     */
+    @Test
+    public void mapperTest06() {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            Map<Integer, User> userMap = userMapper.selectUsersByNameLikeMapResult("%l%");
+            for (Map.Entry<Integer, User> userEntry : userMap.entrySet()) {
+                log.info(userEntry.toString());
+            }
+        }
+    }
+
 }

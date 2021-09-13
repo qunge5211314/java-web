@@ -10,7 +10,8 @@
 
     -->
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO User (name, last_name) values (#{name}, #{lastName})
+        INSERT INTO User (name, last_name)
+        values (#{name}, #{lastName})
     </insert>
 
     <select id="selectOneByIdAndName" resultType="user">
@@ -19,4 +20,27 @@
         -->
         SELECT * FROM User WHERE id=#{id} and name=#{name}
     </select>
+
+
+    <!--resultType：如果返回一个集合，要写集合中元素的类型-->
+    <select id="selectUsersByNameLike" resultType="user">
+        SELECT *
+        FROM User
+        WHERE name like #{name}
+    </select>
+
+    <select id="selectOneByIdMapResult" resultType="map">
+        SELECT *
+        FROM User
+        WHERE id = #{id}
+    </select>
+
+
+    <select id="selectUsersByNameLikeMapResult" resultType="map">
+        SELECT *
+        FROM User
+        WHERE name like #{name}
+    </select>
+
+
 </mapper>

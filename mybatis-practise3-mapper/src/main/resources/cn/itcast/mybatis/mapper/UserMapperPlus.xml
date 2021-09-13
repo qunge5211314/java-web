@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.mybatis.mapper.UserMapperPlus">
+    <!--
+    自定义某个JavaBean的封装规则
+        type：自定义规则的java类型
+        id：唯一id方便引用
+    -->
+    <resultMap id="myUser" type="cn.itcast.mybatis.model.User">
+        <!--
+        1、id 指定主键列的封装规则
+            id定义主键会有底层优化；
+            column：指定哪一列
+            property：指定对应的JavaBean属性
+        -->
+        <id column="id" property="id"/>
+        <!--
+        2、result 定义普通列封装规则
+        -->
+        <result column="last_name" property="lastName"/>
+        <!--
+        3、其他不指定的列会自动封装
+        建议：我们只要写resultMap就把全部的映射规则都写上
+        -->
+        <result column="name" property="name"/>
+    </resultMap>
+    <!--resultMap: 自定义结果集映射规则-->
+    <select id="selectOneById" resultMap="myUser">
+        SELECT *
+        FROM User
+        WHERE id = #{id}
+    </select>
+
+
+    <!--
+    场景一：查询用户的同时，查询出用户所在的公司
+          User======Enterprise
+          一个用户有一个与之对应的企业信息
+    -->
+    <!--
+    联合查询：级联属性封装结果集
+    -->
+    <resultMap id="myUserDifficult1" type="cn.itcast.mybatis.model.User">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="uName" property="name"/>
+        <result column="eid" property="enterprise.id"/>
+        <result column="eName" property="enterprise.name"/>
+    </resultMap>
+    <!--
+    使用 association定义关联的单个对象的封装规则；
+    -->
+    <resultMap id="myUserDifficult2" type="cn.itcast.mybatis.model.User">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="uName" property="name"/>
+        <!--
+        association可以指定联合的JavaBean对象
+            property：指定哪个属性是联合的对象
+            javaType：指定这个属性对象的类型[不能省略]
+        -->
+        <association property="enterprise" javaType="cn.itcast.mybatis.model.Enterprise">
+            <id column="eid" property="id"/>
+            <result column="eName" property="name"/>
+        </association>
+    </resultMap>
+    <select id="selectUserAndEnterpriseById" resultMap="myUserDifficult2">
+        SELECT u.id        id,
+               u.last_name last_name,
+               u.name      uName,
+               e.id        eid,
+               e.name      eName
+        FROM User u,
+             Enterprise e
+        WHERE u.enterprise_id = e.id
+          AND u.id = #{id}
+    </select>
+
+    <!--
+    使用 association进行分步查询
+    1、先按照用户id查询用户信息
+    2、根据查询用户信息中的enterprise_id值去企业表查出企业信息
+    3、企业信息设置到用户中
+    -->
+    <resultMap id="myUserByStep" type="cn.itcast.mybatis.model.User">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="last_name" property="lastName"/>
+        <!--
+        association定义封装对象的关联规则
+            select：表明当前属性是调用select指定的方法查出的结果
+            column：指定将哪一列的值传给这个方法
+            流程：使用select指定的方法(传入colunn这列指定的参数值)查出对象，并封装给property指定的属性
+        -->
+        <association property="enterprise"
+                     select="cn.itcast.mybatis.mapper.EnterpriseMapper.selectOneById"
+                     column="enterprise_id">
+
+        </association>
+    </resultMap>
+    <select id="selectUserAndEnterpriseByIdStep" resultMap="myUserByStep">
+        SELECT *
+        FROM User
+        WHERE id = #{id}
+    </select>
+
+    <!--
+    可以使用延迟加载(懒加载)：按需加载
+        User=====>Enterprise：
+            我们每次查询User对象的时候，都将一起查询出来
+            企业信息在我们使用的时候再去查询；
+            分布查询的基础之上，加上两个配置：
+            lazyLoadingEnabled(true)、aggressiveLazyLoading(false)
+    -->
+    <!--======================================association==========================================-->
+    <!--
+    场景二：查询企业的同时将企业对应的所有用户信息也查询出来
+        注释讲解在cn/itcast/mybatis/mapper/EnterpriseMapper.xml中
+    -->
+
+
+    <select id="selectUsersByEnterpriseId" resultType="User">
+        SELECT *
+        FROM User
+        WHERE enterprise_id = #{enterpriseId}
+    </select>
+</mapper>

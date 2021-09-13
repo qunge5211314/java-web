@@ -17,6 +17,10 @@
     -->
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--显示地指定每个我们需要更改的配置的值，即使他是默认的。防止版本更新带来的问题-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
     </settings>
 
     <!--
@@ -78,7 +82,7 @@
                 1、有sql映射文件，映射文件名必须和接口同名，并且放在与接口同一目录下
                 2、没有sql映射文件，所有的sql都是利用注解写在接口上
         -->
-<!--        <mapper class="cn.itcast.mybatis.mapper.UserMapper"></mapper>-->
+        <!--        <mapper class="cn.itcast.mybatis.mapper.UserMapper"></mapper>-->
         <!--package批量注册-->
         <package name="cn.itcast.mybatis.mapper"/>
     </mappers>
