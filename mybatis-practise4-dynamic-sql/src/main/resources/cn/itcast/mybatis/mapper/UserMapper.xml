@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.mybatis.mapper.UserMapper">
+    <!--
+        mysql支持自增主键，自增主键值的获取，mybatis也是用Statement.getGeneratedKeys()
+        useGeneratedKeys="true": 使用自增主键获取主键值策略
+        keyProperty:指定对应的主键属性，也就是mybatis获取到主键以后，将这个值封装给javaBean的哪个属性
+
+    -->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO User (name, last_name)
+        values (#{name}, #{lastName})
+    </insert>
+
+    <select id="selectOneByIdAndName" resultType="user">
+        <!--
+        SELECT * FROM User WHERE id=#{param1} and name=#{param2}
+        -->
+        SELECT * FROM User WHERE id=#{id} and name=#{name}
+    </select>
+
+
+    <!--resultType：如果返回一个集合，要写集合中元素的类型-->
+    <select id="selectUsersByNameLike" resultType="user">
+        SELECT *
+        FROM User
+        WHERE name like #{name}
+    </select>
+
+    <select id="selectOneByIdMapResult" resultType="map">
+        SELECT *
+        FROM User
+        WHERE id = #{id}
+    </select>
+
+
+    <select id="selectUsersByNameLikeMapResult" resultType="map">
+        SELECT *
+        FROM User
+        WHERE name like #{name}
+    </select>
+
+
+</mapper>

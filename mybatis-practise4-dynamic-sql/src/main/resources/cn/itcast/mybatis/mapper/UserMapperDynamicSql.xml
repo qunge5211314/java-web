@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.itcast.mybatis.mapper.UserMapperDynamicSql">
+
+    <!--
+    sql标签
+    抽取可重用的sql片段。方便后面引用
+    1、sql抽取经常将要查询的列名，或者插入用的列名抽取出来方便引用
+    2、include来引用已经抽取的sql
+    3、include还可以自定义一些property，sql内部标签就能使用自定义的属性
+        include-property取值的正确方式：${prop}
+        不能使用这种方式：#{}
+    -->
+    <sql id="insertColumn">
+        name, last_name
+    </sql>
+
+    <!--
+    * if 判断
+    * choose (when, otherwise)：分支选择：带了break的switch-case
+        如果带了id就用id查，如果带了lastName就用lastName查；只会进入其中一个
+    * trim (where(封装查询条件), set(封装修改条件)) 自定义字符串截取
+    * foreach
+    -->
+
+    <!--
+    一、if的使用
+    使用场景：
+        查询用户，携带了哪个字段查询条件就带上这个字段的值
+    -->
+    <select id="selectUsersByConditionIf" resultType="User">
+        SELECT * FROM User
+        <!--WHERE 1=1-->
+        <!--
+        test:判断表达式(OGNL) c：if
+        OGNL表达式参照官网
+        从参数重取值判断
+        遇见特殊符号应该去写转义字符
+        &&:&amp;&amp;
+        OGNL会进行字符串与数字的转换判断
+        -->
+        <where>
+            <if test="id!=null">
+                id=#{id}
+            </if>
+            <if test="name!=null &amp;&amp; name!=&quot;&quot;">
+                AND name like #{name}
+            </if>
+            <if test="lastName!=null &amp;&amp; lastName!=&quot;&quot;">
+                AND lastName like #{lastName}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectUsersByConditionTrim" resultType="User">
+        SELECT * FROM User
+        <!--
+        trim：自定义字符串的截取规则
+        后面多出的and或者or，where标签不能解决
+        trim标签体中是整个字符串拼串后的结果
+        prefix：前缀，prefix给拼串后的整个字符串加一个前缀
+        prefixOverrides：前缀覆盖，去掉整个字符串前面多余的字符
+        suffix：后缀，suffix给拼串后的整个字符串加一个前缀后缀
+        suffixOverrides：后缀覆盖，去掉整个字符串后面多余的字符
+        -->
+
+        <trim prefix="WHERE" suffixOverrides="AND">
+            <if test="id!=null">
+                id=#{id} AND
+            </if>
+            <if test="name!=null &amp;&amp; name!=&quot;&quot;">
+                name like #{name} AND
+            </if>
+            <if test="lastName!=null &amp;&amp; lastName!=&quot;&quot;">
+                lastName like #{lastName}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectUsersByConditionChoose" resultType="User">
+        SELECT * FROM User
+        <where>
+            <!--如果带了id就用id查，如果带了lastName就用lastName查；只会进入其中一个-->
+            <choose>
+                <when test="id!=null">
+                    id=#{id}
+                </when>
+                <when test="name!=null &amp;&amp; name!=&quot;&quot;">
+                    name like #{name}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateUser">
+        <!--set标签的使用-->
+        <!--update User-->
+        <!--<set>-->
+        <!--<if test="name!=null">-->
+        <!--name=#{name},-->
+        <!--</if>-->
+        <!--<if test="lastName!=null">-->
+        <!--last_name=#{lastName},-->
+        <!--</if>-->
+        <!--</set>-->
+        <!--WHERE id = #{id}-->
+        update User
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="lastName!=null">
+                last_name=#{lastName},
+            </if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!--
+
+    -->
+    <select id="selectUsersByConditionForeach" resultType="User">
+        select * from User WHERE id in
+        <!--
+        collection：指定要遍历的集合：
+            list类型的参数会特殊处理封装在map中，map的key就叫list
+            item：将遍历出的元素赋值给指定的变量
+            #{变量名}就能取出变量的值也就是当前遍历出的元素
+            separator：每个元素之间的分隔符
+            open：遍历出所有结果拼接一个开始的字符
+            close：遍历出所有结果拼接一个结束的字符
+            index：索引。遍历list的时候index就是索引，item就是当前值
+                       遍历map的时候index表示的就是map的key，item就是map的值
+        -->
+        <foreach collection="ids" item="item_id" separator="," open="(" close=")">
+            #{item_id}
+        </foreach>
+    </select>
+
+    <!--
+    批量保存
+    MySQL下批量保存：可以foreach遍历  mysql支持values(),(),()语法
+    -->
+    <insert id="insertUsersByConditionForeach">
+        <!--include标签：引用外部定义的sql-->
+        INSERT INTO User (<include refid="insertColumn"/>) VALUES
+        <foreach collection="users" item="user" separator=",">
+        (#{user.name}, #{user.lastName})
+        </foreach>
+
+        <!--
+        下面这种方式需要数据库连接属性allowMultiQueries=true
+        这种分号分隔多个sql可以用于其他的批量操作(删除、修改)。
+        -->
+        <!--<foreach collection="users" item="user" separator=";">-->
+        <!--INSERT INTO User (`name`, `last_name`) VALUES (#{user.name}, #{user.lastName})-->
+        <!--</foreach>-->
+    </insert>
+
+    <!--
+    两个内置参数
+    不止是方法传递过来的参数可以被用来判断，取值...
+    mybatis默认还有两个内置参数：
+        _parameter：代表整个参数
+            单个参数：_parameter就是这个参数
+            多个参数：参数会被封装成一个map；_parameter就是代表这个map
+        _databaseId：如果配置了databaseIdProvider标签
+            _databaseId就是代表当前数据库的别名
+    -->
+
+    <select id="selectUsersTestInnerParam" resultType="user">
+        <!--bind：可以将OGNL表达式的值绑定到一个变量中，方便后来引用这个变量的值-->
+        <bind name="_name" value="'%'+name+'%'"/>
+        <if test="_databaseId=='mysql'">
+            SELECT * FROM User
+            <if test="_parameter!=null">
+                WHERE name like #{_name}
+            </if>
+        </if>
+    </select>
+
+
+</mapper>
