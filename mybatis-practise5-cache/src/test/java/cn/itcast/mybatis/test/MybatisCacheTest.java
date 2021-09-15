@@ -1,6 +1,8 @@
 package cn.itcast.mybatis.test;
 
+import cn.itcast.mybatis.mapper.EnterpriseMapper;
 import cn.itcast.mybatis.mapper.UserMapper;
+import cn.itcast.mybatis.model.Enterprise;
 import cn.itcast.mybatis.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.io.Resources;
@@ -165,6 +167,23 @@ public class MybatisCacheTest {
             User user2 = userMapper2.selectOneById(2);
             log.info(user2.toString());
             log.info("user1和user2对比结果为：" + (user1 == user2));
+        }
+    }
+
+    /**
+     * 使用第三方缓存redis
+     */
+    @Test
+    public void mybatisCacheTest09() {
+        try (SqlSession sqlSession1 = sqlSessionFactory.openSession();
+             SqlSession sqlSession2 = sqlSessionFactory.openSession();) {
+            EnterpriseMapper enterpriseMapper1 = sqlSession1.getMapper(EnterpriseMapper.class);
+            EnterpriseMapper enterpriseMapper2 = sqlSession2.getMapper(EnterpriseMapper.class);
+            Enterprise enterprise1 = enterpriseMapper1.selectOneById(2);
+            Enterprise enterprise2 = enterpriseMapper2.selectOneById(2);
+            log.info(enterprise1.toString());
+            log.info(enterprise2.toString());
+            log.info("user1和user2对比结果为：" + (enterprise1 == enterprise2));
         }
     }
 }

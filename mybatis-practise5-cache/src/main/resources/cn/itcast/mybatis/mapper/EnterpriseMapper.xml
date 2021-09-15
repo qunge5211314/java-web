@@ -5,7 +5,7 @@
 <mapper namespace="cn.itcast.mybatis.mapper.EnterpriseMapper">
 
     <!--缓存引用，namespace：指定和那个名称空间下的缓存策略一样-->
-    <cache-ref namespace="cn.itcast.mybatis.mapper.UserMapper"/>
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
     <select id="selectOneById" resultType="Enterprise">
         SELECT *
         FROM Enterprise
