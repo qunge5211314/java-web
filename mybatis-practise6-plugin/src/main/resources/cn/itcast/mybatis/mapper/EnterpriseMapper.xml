@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.mybatis.mapper.EnterpriseMapper">
+
+    <!--缓存引用，namespace：指定和那个名称空间下的缓存策略一样-->
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+    <select id="selectOneById" resultType="Enterprise">
+        SELECT *
+        FROM Enterprise
+        WHERE id = #{id}
+    </select>
+
+    <!--collection嵌套结果集的方式，定义关联的集合类型元素的封装规则-->
+    <resultMap id="myEnterprise" type="Enterprise">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <!--
+        collection定义关联的集合类型的属性的封装规则
+        ofType：指定集合里面元素的类型
+
+        -->
+        <collection property="userList" ofType="user">
+            <!--定义这个集合中元素的封装规则-->
+            <id column="uid" property="id"/>
+            <result column="uName" property="name"/>
+            <result column="uLastName" property="lastName"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectEnterpriseAndUsersById" resultMap="myEnterprise">
+        SELECT e.id id, e.name name, u.id uid, u.name uName, u.last_name uLastName
+        FROM Enterprise e
+                 LEFT JOIN User u ON e.id = u.enterprise_id
+        WHERE e.id = #{id}
+    </select>
+
+    <resultMap id="myEnterpriseStep" type="Enterprise">
+        <!--        <id column="id" property="id"/>-->
+        <!--        <result column="name" property="name"/>-->
+        <collection property="userList" ofType="User"
+                    select="cn.itcast.mybatis.mapper.UserMapperPlus.selectUsersByEnterpriseId"
+                    column="enterpriseId=id"
+                    fetchType="lazy">
+            <!--            <id column="id" property="id"/>-->
+            <!--            <result column="last_name" property="lastName"/>-->
+            <!--            <result column="name" property="name"/>-->
+        </collection>
+    </resultMap>
+
+    <select id="selectEnterpriseAndUsersByIdStep" resultMap="myEnterpriseStep">
+        SELECT *
+        FROM Enterprise
+        WHERE id = #{id}
+    </select>
+
+    <!--
+    拓展：多列的值传递过去
+    将多列的值封装map传递
+    column="{key1=column1,key2=column2....}"
+
+    fetchType="lazy"：表示使用延迟加载
+        lazy：延迟加载
+        eager：立即加载
+    -->
+</mapper>
