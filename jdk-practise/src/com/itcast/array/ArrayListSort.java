@@ -1,27 +1,12 @@
 package com.itcast.array;
 
-
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.TreeSet;
 
-/**
- * 存储学生对象并遍历，创建TreeSet集合使用带参构造方法
- * 要求：按照年龄从小到大排序，年龄相同时，按照姓名的字母排序
- */
-public class ComparatorPractise {
+public class ArrayListSort {
     public static void main(String[] args) {
-        // 创建集合对象
-        TreeSet<Student> students = new TreeSet<>(new Comparator<Student>(
-
-        ) {
-            @Override
-            public int compare(Student o1, Student o2) {
-                int num = o1.getAge() - o2.getAge();
-                return num == 0 ? o1.getName().compareTo(o2.getName()) : num;
-            }
-        });
-
+        ArrayList<Student> students = new ArrayList<>();
         // 创建学生对象
         Student student1 = new Student("xishi", 21);
         Student student2 = new Student("diaochan", 19);
@@ -33,11 +18,16 @@ public class ComparatorPractise {
         students.add(student3);
         students.add(student4);
 
-        // 遍历集合
+        Collections.sort(students, new Comparator<Student>() {
+            @Override
+            public int compare(Student o1, Student o2) {
+                return o1.getAge()-o2.getAge();
+            }
+        });
+        Collections.reverse(students);
+//        Collections.shuffle(students);
         for (Student student : students) {
             System.out.println(student);
         }
     }
-
-
 }
