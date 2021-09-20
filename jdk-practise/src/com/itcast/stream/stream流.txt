@@ -1,0 +1,25 @@
+Stream流
+    Stream流的组成：
+        1、生成流
+            通过数据源(集合，数组等)生成流
+        2、中间操作
+            一个流后面可以跟着零个或者多个中间操作，其目的主要是打开流，
+            做出某种程度的数据过滤/映射，然后返回一个新的流，交给下一个
+            操作使用。
+            例如：filter
+        3、终结操作
+            一个流只能有一个终结操作，当这个操作执行后，流就被使用光了，
+            无法再被操作，所以这必定是流的最后一个操作。
+            例如：forEach
+    Stream流的生成方式：
+        1、Collection体系的集合可以使用默认方法stream()生成流
+            default Stream<E> stream()
+        2、Map体系的集合间接地生成流
+        3、数组可以通过Stream接口的静态方法of(T...values)生成流
+    Stream流的常见中间操作方法
+        1、Stream<T> filter(Predicate predicate)：用于对流中数据进行过滤
+            Predicate接口中的方法：boolean test(T t)：对给定的参数进行判断，返回一个布尔值
+        2、Stream<T> limit(long maxSize)：返回此流中的元素组成的流，截取前指定参数个数的数据
+        3、Stream<T> skip(long n)：跳过指定参数个数的数据，返回由该流的剩余元素组成的流
+        4、static <T> Stream<T> concat(Stream a, Stream b)：合并a和b两个流为一个流
+        5、Stream<T> distinct()：返回由该流的不同元素(根据Object.equals(Object))组成的流
