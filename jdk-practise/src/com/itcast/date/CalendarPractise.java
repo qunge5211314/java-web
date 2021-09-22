@@ -2,6 +2,7 @@ package com.itcast.date;
 
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Calendar为某一时刻和一组日历字段之间的转换提供了一些方法，并为操作日历字段提供了一些方法
@@ -23,5 +24,9 @@ public class CalendarPractise {
         rightNow.add(Calendar.MONTH, 4);
         int i = rightNow.get(Calendar.MONTH);
         System.out.println(i);
+        // Date与Calendar互相转换
+        Date time = rightNow.getTime();
+        Date date = new Date();
+        rightNow.setTime(date);
     }
 }
